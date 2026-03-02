@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bill Result</title>
+</head>
+<body>
+
+<h2>Bill Generated Successfully</h2>
+
+<p><strong>Bill ID:</strong> {{ result.bill_id }}</p>
+<p><strong>Total Without Tax:</strong> {{ result.total_without_tax }}</p>
+<p><strong>Total Tax:</strong> {{ result.total_tax }}</p>
+<p><strong>Net Total:</strong> {{ result.net_total }}</p>
+<p><strong>Rounded Total:</strong> {{ result.rounded_total }}</p>
+<p><strong>Cash Paid:</strong> {{ result.cash_paid }}</p>
+<p><strong>Balance Amount:</strong> {{ result.balance_amount }}</p>
+
+<h3>Denominations:</h3>
+<ul>
+    {% for d in result.denominations %}
+        <li>{{ d.denomination_value }} × {{ d.count }}</li>
+    {% endfor %}
+</ul>
+
+<a href="/">Back to Billing Page</a>
+
+</body>
+</html>

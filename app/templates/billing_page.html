@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Page</title>
+</head>
+<body>
+
+<h2>Billing System</h2>
+
+<!-- 🔴 Show Error Message -->
+{% if error %}
+    <p style="color:red; font-weight:bold;">{{ error }}</p>
+{% endif %}
+
+<form action="/generate-bill" method="post">
+
+    <label><strong>Customer Email:</strong></label>
+    <input type="email" name="email" required>
+    <br><br>
+
+    <h3>Select Products</h3>
+
+    {% for product in products %}
+        <div style="margin-bottom:10px;">
+            <label>
+                {{ product.name }} 
+                (Stock: {{ product.available_stock }}, 
+                Price: {{ product.price }}, 
+                Tax: {{ product.tax_percentage }}%)
+            </label>
+
+            <!-- Hidden product ID -->
+            <input type="hidden" name="product_ids" value="{{ product.product_id }}">
+
+            <!-- Quantity input -->
+            <input 
+                type="number" 
+                name="quantities" 
+                min="0" 
+                max="{{ product.available_stock }}"
+                value="0"
+            >
+        </div>
+    {% endfor %}
+
+    <br>
+
+    <label><strong>Cash Paid:</strong></label>
+    <input type="number" step="0.01" name="cash_paid" required>
+
+    <br><br>
+
+    <button type="submit">Generate Bill</button>
+
+</form>
+
+</body>
+</html>
