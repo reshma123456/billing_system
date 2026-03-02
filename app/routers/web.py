@@ -45,7 +45,7 @@ def generate_bill_web(
     try:
         result = generate_bill(db, email, items, cash_paid)
 
-        # 🔥 Async Email Trigger
+        # Async Email Trigger
         background_tasks.add_task(
             send_invoice_email,
             email,

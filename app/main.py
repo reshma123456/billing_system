@@ -4,24 +4,25 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 from app.database import engine, Base, SessionLocal
-import app.models  # VERY IMPORTANT - registers all models
+import app.models  # registers all models
+from app.routers import products, billing, history, web
 
 from app.crud import create_product
 from app.models import Product
 from fastapi.responses import FileResponse
 
 # -------------------------------
-# 1️⃣ Create FastAPI App
+# Create FastAPI App
 # -------------------------------
 app = FastAPI(title="Billing System")
 
 # -------------------------------
-# 2️⃣ Create Database Tables
+#  Create Database Tables
 # -------------------------------
 Base.metadata.create_all(bind=engine)
 
 # -------------------------------
-# 3️⃣ Templates & Static Files
+#  Templates & Static Files
 # -------------------------------
 templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -31,7 +32,7 @@ async def favicon():
     return FileResponse("app/static/favicon.ico")
 
 # -------------------------------
-# 4️⃣ Seed Products on Startup
+#  Seed Products on Startup
 # -------------------------------
 @app.on_event("startup")
 def seed_products():
@@ -69,17 +70,10 @@ def seed_products():
     finally:
         db.close()
 
-# # -------------------------------
-# # 5️⃣ Root Health Check
-# # -------------------------------
-# @app.get("/")
-# def root():
-#     return {"message": "Billing System Running Successfully"}
 
 # -------------------------------
-# 6️⃣ Include Routers
+#  Include Routers
 # -------------------------------
-from app.routers import products, billing, history, web
 
 app.include_router(products.router)
 app.include_router(billing.router)

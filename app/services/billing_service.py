@@ -31,7 +31,7 @@ def calculate_denominations(balance_amount: int):
 def generate_bill(db: Session, email: str, items: list, cash_paid: float):
 
     try:
-        # 1️⃣ Get or Create Customer
+        # 1.Get or Create Customer
         customer = get_customer_by_email(db, email)
         if not customer:
             customer = create_customer(db, email)
@@ -39,7 +39,7 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
         total_without_tax = 0
         total_tax = 0
 
-        # 2️⃣ Create Bill (initially empty totals)
+        # 2️.Create Bill (initially empty totals)
         bill = Bill(
             customer_id=customer.id,
             total_without_tax=0,
@@ -51,9 +51,9 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
         )
 
         db.add(bill)
-        db.flush()  # 🔥 Needed to get bill.id before commit
+        db.flush()  # Needed to get bill.id before commit
 
-        # 3️⃣ Process Each Item
+        # 3️. Process Each Item
         for item in items:
 
             product = db.query(Product).filter(
@@ -73,7 +73,7 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
             total_without_tax += purchase_price
             total_tax += tax_amount
 
-            # 🔥 Reduce Stock
+            # Reduce Stock
             product.available_stock -= item["quantity"]
 
             bill_item = BillItem(
@@ -88,7 +88,7 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
 
             db.add(bill_item)
 
-        # 4️⃣ Final Calculations
+        # 4️. Final Calculations
         net_total = total_without_tax + total_tax
         rounded_total = int(net_total)
         balance_amount = cash_paid - rounded_total
@@ -103,7 +103,7 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
         bill.rounded_total = rounded_total
         bill.balance_amount = balance_amount
 
-        # 5️⃣ Calculate Denominations
+        # 5️. Calculate Denominations
         denomination_data = calculate_denominations(int(balance_amount))
 
         for denom in denomination_data:
@@ -113,7 +113,7 @@ def generate_bill(db: Session, email: str, items: list, cash_paid: float):
                 count=denom["count"]
             ))
 
-        # 6️⃣ Commit Transaction
+        # 6️. Commit Transaction
         db.commit()
 
         return {
