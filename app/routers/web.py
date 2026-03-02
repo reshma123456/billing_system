@@ -63,3 +63,4 @@ def generate_bill_web(
             "error": str(e),
             "products": db.query(Product).all()
         })
+
