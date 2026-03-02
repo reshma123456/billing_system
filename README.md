@@ -26,28 +26,30 @@ This application allows users to:
 ---
 
 ##  Project Architecture
-app/
+
+billing_system/
 │
-├── main.py # FastAPI app initialization
-├── database.py # DB engine & session setup
-├── models.py # SQLAlchemy models
-├── crud.py # DB operations
-│
-├── routers/
-│ └── web.py # Web routes
-│
-├── services/
-│ ├── billing_service.py # Core billing logic
-│ └── email_service.py # Invoice email logic
-│
-├── templates/
+├── app/
+│ ├── main.py # FastAPI app initialization
+│ ├── database.py # DB engine & session setup
+│ ├── models.py # SQLAlchemy models
+│ ├── crud.py # Database operations
+│ │
+│ ├── routers/
+│ │ └── web.py # Web routes
+│ │
+│ ├── services/
+│ │ ├── billing_service.py # Core billing logic
+│ │ └── email_service.py # Email logic
+│ │
+│ └── templates/
 │ ├── billing_page.html
 │ └── bill_result.html
 │
-docker-compose.yml
-Dockerfile
-requirements.txt
-README.md
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+└── README.md
 
 ##  Features
 
@@ -144,12 +146,12 @@ http://127.0.0.1:8000
 
 #### Database Tables
 
-products
+- products
 
-customers
+- customers
 
-bills
+- bills
 
-bill_items
+- bill_items
 
-denominations
+- denominations
